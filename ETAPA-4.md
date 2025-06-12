@@ -57,6 +57,12 @@
 3. Selecionar 'Scaling automático'
 - Clicar em 'Criar política de dimensionamento dinâmico'
 
+# Scaling automático
+1. Abrir a barra de pesquisa e pesquisar 'Auto scaling group'
+2. Selecionar ele clicando no checkbox
+3. Selecionar 'Scaling automático'
+- Clicar em 'Criar política de dimensionamento dinâmico'
+
 1. Na barra de pesquisa, digitar 'CloudWatch'
 2. Clicar em 'Alarmes' e em 'Criar alarmes'
 
@@ -108,3 +114,32 @@
 
 1. Selecionar as instâncias com a porta '80'
 2. Quando selecionar as instâncias, clique em 'Criar grupo de destino'
+
+# Cloudwatch
+1. Na barra de pesquisa, digitar 'CloudWatch'
+2. Clicar em 'Alarmes' e em 'Criar alarmes'
+
+## Etapa 1: Especificar métrica e condições
+1. Clicar em 'Selecionar métrica'
+- Selecionar EC2
+- Selecionar 'Por Auto Scaling Group' e AS6-Project02
+2. Em 'Condições', selecione 'Estático' e embaixo 'GreateryEqual'
+3. Clicar em 'Próximo'
+
+## Etapa 2: 
+1. Em 'Disparador de estado de alarme', selecionar 'Em alarme'
+2. Em 'Enviar a notificação para', selecionar EC2 Auto Scaling Group
+3. Selecionar o Auto Scaling Group criado antes
+4. Selecionar 'Aplicar às 2 instâncias'
+
+## Etapa 3:
+1. Clicar em 'Próximo'
+
+## Etapa 4:
+1. Nome e descrição: inserir um nome para o alarme
+2. Clicar em 'Próximo'
+
+## Criando Target Groups / Grupo de destino
+
+1. Na barra de pesquisa, pesquise por 'Target Groups'
+2. Clicar em 'Criar grupo de destino'
