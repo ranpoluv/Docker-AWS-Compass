@@ -44,12 +44,18 @@
 5. Clicar em 'Regras de entrada'
 - Colocar as suas informações.
 
-![alt text](images-um/image-8.png)
+| Tipo | Origem | 
+| --- | --- |
+| HTTP | Grupo de segurança Load Balancer | 
+| SSH | Meu IP | 
+| NFS |  Grupo de segurança da EFS |
 
 6. Clicar em 'Regras de Saída'
 - Colocar as suas informações:
 
-![alt text](images-um/image-27.png)
+| Tipo | Origem | 
+| --- | --- |
+| Todo o tráfego | Anywhere | 
 
 #### Grupo de segurança da RDS
 1. Definir o nome do Security Group
@@ -58,12 +64,16 @@
 4. Em 'Regras de entrada'
 - Colocar essas informações:
 
-![alt text](images-um/image-34.png)
+| Tipo | Origem | 
+| --- | --- |
+| MySQL/Aurora |Grupo de segurança da EC2 | 
 
 5. Clicar em 'Regras de Saída'
 - Colocar essas informações:
 
-![alt text](images-um/image-35.png)
+| Tipo | Origem | 
+| --- | --- |
+| MySQL/Aurora | Grupo de segurança da EC2 | 
 
 #### Grupo de segurança da EFS
 1. Definir o nome do Security Group
@@ -72,12 +82,16 @@
 4. Em Regras de entrada:
 - Colocar essas informações:
 
-![alt text](images-um/image-26.png)
+| Tipo | Origem | 
+| --- | --- |
+| NFS | Grupo de segurança EC2 | 
 
 5. Em Regras de saída:
 - Colocar essas informações:
 
-![alt text](images-um/image-36.png)
+| Tipo | Origem | 
+| --- | --- |
+| NFS | Grupo de segurança da EC2 | 
 
 #### Grupo de segurança da Load Balancer
 1. Definir o nome do Security Group
@@ -86,13 +100,16 @@
 4. Em 'Regras de entrada'
 - Colocar essas informações:
 
-![alt text](images-um/image-37.png)
+| Tipo | Origem | 
+| --- | --- |
+| HTTP | Anywhere | 
 
 5. Em em 'Regras de Saída'
 - Colocar essas informações:
 
-![alt text](images-um/image-38.png)
-
+| Tipo | Origem | 
+| --- | --- |
+| HTTP | Grupo de segurança EC2 |  
 
 # Testando manualmente
 ## Criando uma instância EC2 
