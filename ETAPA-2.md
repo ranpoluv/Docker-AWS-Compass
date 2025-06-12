@@ -52,6 +52,8 @@
 16. Depois de criado, aguarde alguns segundos.
 - Clique em cima do nome do seu banco de dados
 17. Copie o endpoint
+
+## Testando manualmente
 18. Abra o terminal do EC2 novamente
 ```bash
 sudo yum install -y mariadb105

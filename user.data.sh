@@ -1,64 +1,54 @@
 #!/bin/bash
 
-# EFS, DB e Docker Compose Configurações
-# Substitua os valores abaixo pelos seus próprios
-# Certifique-se de que o EFS e o banco de dados estejam configurados corretamente antes de executar este script
-EFS_FILE_SYSTEM_ID="<seu_file_id>"  
-DB_HOST="<seu_host_do_banco_de_dados>"  
-DB_NAME="<seu_nome_do_banco_de_dados>"  
-DB_USER="<seu_usuario_do_banco>"  
-DB_PASSWORD="<sua_senha_do_banco>"  
-DOCKER_COMPOSE_VERSION="v2.34.0"
-PROJECT_DIR="/home/ec2-user/projeto-docker"
-EFS_MOUNT_DIR="/mnt/efs"  
+exec > /var/log/user-data.log 2>&1
+set -euxo pipefail
 
-# Atualizar e instalar dependências
-yum update -y
-yum install -y aws-cli
+EFS_ENDPOINT="<seu_efs_endpoint>" 
+DB_HOST="<seu_db_host>"           
+DB_USER="<seu_db_user>"
+DB_PASSWORD="<sua_db_password>"
+DB_NAME="<seu_db_name>"
+DOCKER_COMPOSE_VERSION="v2.23.0"  
 
-# Instalar e configurar do Docker
-yum install -y docker
-service docker start
-systemctl enable docker
-usermod -a -G docker ec2-user
+dnf update -y
+dnf install -y docker amazon-efs-utils 
 
-# Instalar o Docker Compose
-curl -SL https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+systemctl enable --now docker
+usermod -aG docker ec2-user
 
-# Instalar e montar o EFS
-yum install -y amazon-efs-utils
-mkdir -p ${EFS_MOUNT_DIR}
-mount -t efs ${EFS_FILE_SYSTEM_ID}:/ ${EFS_MOUNT_DIR}
-echo "${EFS_FILE_SYSTEM_ID}:/ ${EFS_MOUNT_DIR} efs defaults,_netdev 0 0" >> /etc/fstab
+mkdir -p /usr/libexec/docker/cli-plugins
+curl -SL "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-x86_64" \
+  -o /usr/libexec/docker/cli-plugins/docker-compose
+chmod +x /usr/libexec/docker/cli-plugins/docker-compose
 
-# Permissões corretas para WordPress (usuário 33 = www-data no container)
-chown -R 33:33 ${EFS_MOUNT_DIR}
+mkdir -p /mnt/efs
+mount -t efs ${EFS_ENDPOINT}:/ /mnt/efs
+echo "${EFS_ENDPOINT}:/ /mnt/efs efs defaults,_netdev 0 0" >> /etc/fstab 
 
-# Preparação do projeto
-mkdir -p ${PROJECT_DIR}
-cd ${PROJECT_DIR}
+while ! mountpoint -q /mnt/efs; do
+  echo "EFS não montado, aguardando..."
+  sleep 5
+done
 
-# Arquivo docker-compose.yml
-cat > docker-compose.yml <<EOL
-version: '3.7'
+mkdir -p /mnt/efs/wordpress
+chown -R 33:33 /mnt/efs/wordpress
+
+
+sudo -u ec2-user bash -c "cat > /home/ec2-user/docker-compose.yaml <<EOF
+version: \"3.8\"
 services:
   wordpress:
     image: wordpress:latest
-    container_name: wordpress
+    restart: always
+    ports:
+      - \"80:80\"
     environment:
       WORDPRESS_DB_HOST: ${DB_HOST}
-      WORDPRESS_DB_NAME: ${DB_NAME}
       WORDPRESS_DB_USER: ${DB_USER}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - 80:80
+      WORDPRESS_DB_NAME: ${DB_NAME}
     volumes:
-      - ${EFS_MOUNT_DIR}:/var/www/html
+      - /mnt/efs/wordpress:/var/www/html
+EOF"
 
-volumes:
-  wordpress_data:
-EOL
-
-# Iniciar o WordPress
-docker-compose up -d
+sudo -u ec2-user bash -c "cd /home/ec2-user && docker compose up -d"

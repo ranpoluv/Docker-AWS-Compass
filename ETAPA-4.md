@@ -6,13 +6,12 @@
 
 ![alt text](images-quatro/image-5.png)
 
-3. Clicar em 'Classic Load Balancer - geração anterior'
+3. Clicar em 'Aplicações Load Balancer'
 - Selecionar 'Criar'
 
-![alt text](images-quatro/image-6.png)
-
+## Configurações
 4. Nome do load balancer: inserir um nome 
-2. Esquema: 
+2. Esquema: Selecionar 'Internet-facing'
 3. VPC: Selecionar a VPC
 4. Zonas de disponibilidade e subnets: inserir as subnets públicas
 5. Grupos de segurança: selecionar o grupo de segurança
@@ -34,12 +33,11 @@
 
 ### Etapa 3: Integrar com outros serviços
 1. Selecionar 'Anexar a um balanceador de carga existente'
-2. Em 'Anexar a um balanceador de carga existente', selecionar 'Escolha entre balanceadores de carga clássicos'
+2. Em 'Grupos de destino de balanceador de carga existentes':
 - Selecionar o Load Balancer que foi configurado antes
 3. Em 'Serviço VPC Lattice para anexar', selecionar 'Nenhum serviço VPC Lattice para anexar'
-4. Em 'Verificações de saúde', selecionar o tempo 
-5. Marcar o checkbox 'Ativar verificações de integridade do Elastic Load Balancing'
-6. Clicar em 'Próximo'
+4. Marcar o checkbox 'Ativar verificações de integridade do Elastic Load Balancing'
+5. Clicar em 'Próximo'
 
 ### Etapa 4: Configurar tamanho do grupo e ajuste de escala
 1. Em 'Tamanho do grupo':

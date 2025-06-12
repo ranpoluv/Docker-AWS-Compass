@@ -93,7 +93,9 @@
 
 ![alt text](images-um/image-38.png)
 
-## Criando uma instância EC2
+
+# Testando manualmente
+## Criando uma instância EC2 
 
 1. Na barra de pesquisa, pesquisar EC2
 2. Clicar em 'Instâncias' e depois em 'Executar instâncias'
