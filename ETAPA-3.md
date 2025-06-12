@@ -132,12 +132,12 @@ sudo -u ec2-user bash -c "cd /home/ec2-user && docker compose up -d"
 
 1. Para instalar o EFS:
 ```bash
-sudo apt-get update
-sudo apt-get -y install git binutils rustc cargo pkg-config libssl-dev
+sudo yum update -y
+sudo yum install -y git binutils rust cargo pkgconfig openssl-devel
 git clone https://github.com/aws/efs-utils
 cd efs-utils
 ./build-deb.sh
-sudo apt-get -y install ./build/amazon-efs-utils*deb
+sudo yum install -y ./build/amazon-efs-utils*.rpm
 ```
 
 2. Para montar:
